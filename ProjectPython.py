@@ -3,22 +3,85 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import seaborn as sns
-
+import csv
 
 # Variables
-NumberOfModels = int(input("How many models you want to compare  ? "))
-NumberOfStats = int(input("How many stats of models you want to compare ? "))
-listOfStats = []
-StatsOfModels = {}
-Models = []
+# NumberOfModels = int(input("How many models you want to compare  ? "))
+# NumberOfStats = int(input("How many stats of models you want to compare ? "))
+# listOfStats = []
+# StatsOfModels = {}
+# Models = []
 
 # Data reading
 
+data = pd.read_csv('Apple.csv',sep=";")
+
+"""data = pd.DataFrame(
+    {'Price': [1000, 750, 500], "Repairs cost": [500, 200, 400], 'Longevity': [5, 3, 5], 'FPS': [90, 60, 30],
+     'Year': [2024, 2023, 2010], 'Company': ['Apple', "Samsung", "Xiomi"], 'Pixels': [10000, 4900, 4000]})
+data.head()"""
+
+# Slice
+# print(data.query('Company == "Apple"'))
+
+# General information about dataset and how much nulls are in there
+"""data.info()
+data.isnull().sum()
+"""
+# Histograms
+"""
+data["Price"].hist()
+data["Repairs cost"].hist()
+data["Longevity"].hist()
+data["FPS"].hist()
+data["Year"].hist()
+data["Company"].hist()
+data["Pixels"].hist()
+"""
+# Value count
+print(data)
+print(data.columns)
+print(data.index)
+print(data['Warranty_years'])
+
+# data["Model"].query('data["Model"] == "iPad"').value_counts()
+
+# Deleting useless info
+# data = data.drop(["Model name"], axis = 1)
+
+# Describing general information of models
+
+print(data["Price"].min(), data["Price"].max(), data["Price"].median())
+
 # Data sorting
 
-# Functions
+# Data graphing
+xdata = data["Model"]
+ydata = data["Price"]
+fig, axes = plt.subplots(nrows=2, ncols=2, figsize=(10, 8))
 
-def CreateApropriateLists():
+axes[0, 0].bar(xdata, ydata, color='lightblue', ec='darkblue')
+axes[0, 0].set_ylabel("Price")
+axes[0, 0].set_title("Bar diagram", fontsize=10)
+
+axes[0, 1].scatter(xdata, ydata)
+axes[0, 1].grid(True)
+axes[0, 1].set_ylabel("Price")
+axes[0, 1].set_title("Scatter diagram", fontsize=10)
+
+axes[1, 0].pie(data["Battery_Life_hours"], labels=xdata)
+axes[1, 0].set_title("Pie chart", fontsize=10)
+axes[1, 0].legend(title='Companies')
+
+axes[1, 1].hist(data["Model"], color='lightblue', ec='darkblue')
+axes[1, 1].set_ylabel("Counted value")
+axes[1, 1].set_title("Hist diagram", fontsize=10)
+
+plt.tight_layout()
+plt.show()
+
+# Functions
+"""def CreateApropriateLists():
     arg = 0
     while arg < NumberOfModels:
         NameOfModel = input("What is the name of compared model ? ")
@@ -124,4 +187,5 @@ def Conclusions():
 CreateApropriateLists()
 MakingStats()
 CreateGraph()
-# Conclusions()
+Conclusions()
+"""
