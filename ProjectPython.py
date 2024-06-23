@@ -38,11 +38,6 @@ data["Year"].hist()
 data["Company"].hist()
 data["Pixels"].hist()
 """
-# Value count
-print(data)
-print(data.columns)
-print(data.index)
-print(data['Warranty_years'])
 
 # data["Model"].query('data["Model"] == "iPad"').value_counts()
 
@@ -50,17 +45,21 @@ print(data['Warranty_years'])
 # data = data.drop(["Model name"], axis = 1)
 
 # Describing general information of models
-
 print(data["Price"].min(), data["Price"].max(), data["Price"].median())
 
-# Data sorting
+# Directly removing nulls in data
+data = data.mask(data.eq("None")).dropna()
 
 # Data graphing
-xdata = data["Model"]
-ydata = data["Price"]
+data_2 = pd.DataFrame(data).reindex(columns=["Model", "Price"])
+data_Max_Prices = data_2.sort_values(["Model","Price"], ascending=[False,False]).drop_duplicates(["Model"]).reset_index(drop=True)
+# data_Max_FPS = data_2.sort_values(["Model","Max_FPS"], ascending=[False,False]).drop_duplicates(["Model"]).reset_index(drop=True)
+data_Year = data_2.sort_values(["Model","Max_FPS"], ascending=[False,False]).drop_duplicates(["Model"]).reset_index(drop=True)
+data_Price = data_2.sort_values(["Model","Max_FPS"], ascending=[False,False]).drop_duplicates(["Model"]).reset_index(drop=True)
+
 fig, axes = plt.subplots(nrows=2, ncols=2, figsize=(10, 8))
 
-axes[0, 0].bar(xdata, ydata, color='lightblue', ec='darkblue')
+axes[0, 0].bar(data_Max_Prices["Model"], data_Max_Prices["Price"], color='lightblue', ec='darkblue')
 axes[0, 0].set_ylabel("Price")
 axes[0, 0].set_title("Bar diagram", fontsize=10)
 
@@ -69,15 +68,14 @@ axes[0, 1].grid(True)
 axes[0, 1].set_ylabel("Price")
 axes[0, 1].set_title("Scatter diagram", fontsize=10)
 
-axes[1, 0].pie(data["Battery_Life_hours"], labels=xdata)
+axes[1, 0].pie(data["Model"].value_counts(), labels=data["Model"].unique() )
 axes[1, 0].set_title("Pie chart", fontsize=10)
-axes[1, 0].legend(title='Companies')
+axes[1, 0].legend()
 
-axes[1, 1].hist(data["Model"], color='lightblue', ec='darkblue')
-axes[1, 1].set_ylabel("Counted value")
+# axes[1, 1].set_ylabel("Max FPS")
 axes[1, 1].set_title("Hist diagram", fontsize=10)
 
-plt.tight_layout()
+# plt.tight_layout()
 plt.show()
 
 # Functions
