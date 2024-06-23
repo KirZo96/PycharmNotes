@@ -75,7 +75,7 @@ axes[1, 0].legend()
 # axes[1, 1].set_ylabel("Max FPS")
 axes[1, 1].set_title("Hist diagram", fontsize=10)
 
-# plt.tight_layout()
+plt.tight_layout()
 plt.show()
 
 # Functions
