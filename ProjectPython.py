@@ -51,11 +51,11 @@ print(data["Price"].min(), data["Price"].max(), data["Price"].median())
 data = data.mask(data.eq("None")).dropna()
 
 # Data graphing
-data_2 = pd.DataFrame(data).reindex(columns=["Model", "Price"])
-data_Max_Prices = data_2.sort_values(["Model","Price"], ascending=[False,False]).drop_duplicates(["Model"]).reset_index(drop=True)
+data_2 = pd.DataFrame(data).reindex(columns=["Model", "Price", "Year"])
+data_Max_Prices = data_2.sort_values(["Model", "Price", "Year"], ascending=[False,False, False]).drop_duplicates(["Model"]).reset_index(drop=True)
 # data_Max_FPS = data_2.sort_values(["Model","Max_FPS"], ascending=[False,False]).drop_duplicates(["Model"]).reset_index(drop=True)
-data_Year = data_2.sort_values(["Model","Max_FPS"], ascending=[False,False]).drop_duplicates(["Model"]).reset_index(drop=True)
-data_Price = data_2.sort_values(["Model","Max_FPS"], ascending=[False,False]).drop_duplicates(["Model"]).reset_index(drop=True)
+# data_Year = data_2.sort_values(["Year","Price"], ascending=[False, False]).drop_duplicates(["Year"]).reset_index(drop=True)
+# data_Price = data_2.sort_values(["Model","Max_FPS"], ascending=[False, False]).drop_duplicates(["Model"]).reset_index(drop=True)
 
 fig, axes = plt.subplots(nrows=2, ncols=2, figsize=(10, 8))
 
@@ -63,7 +63,7 @@ axes[0, 0].bar(data_Max_Prices["Model"], data_Max_Prices["Price"], color='lightb
 axes[0, 0].set_ylabel("Price")
 axes[0, 0].set_title("Bar diagram", fontsize=10)
 
-axes[0, 1].scatter(xdata, ydata)
+axes[0, 1].scatter(data_Max_Prices["Year"], data_Max_Prices["Price"] )
 axes[0, 1].grid(True)
 axes[0, 1].set_ylabel("Price")
 axes[0, 1].set_title("Scatter diagram", fontsize=10)
